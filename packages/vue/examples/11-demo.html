@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <button id="btn">过年了</button>
+    <script type="module">
+      // import {
+      //   h,
+      //   createApp,
+      //   ref,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.js'
+      import { h, ref, createApp, nextTick } from '../dist/vue.esm.js'
+      const Child = {
+        props: ['age'],
+        setup(props) {
+          return () => {
+            return h('div', ['我是子组件', '我的年龄是：', props.age])
+          }
+        },
+      }
+      const Comp = {
+        // props: {
+        //   msg: String,
+        // },
+        setup(props, { attrs }) {
+          const age = ref(0)
+          btn.onclick = () => {
+            age.value++
+          }
+          return () => {
+            return h(Child, { age: age.value })
+          }
+        },
+      }
+
+      createApp(Comp, { msg: 'hello' }).mount('#app')
+    </script>
+  </body>
+</html>

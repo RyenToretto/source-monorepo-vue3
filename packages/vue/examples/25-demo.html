@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      #app {
+        padding: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      // import {
+      //   h,
+      //   createApp,
+      //   ref,
+      //   createVNode,
+      //   openBlock,
+      //   createElementBlock,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.js'
+      import {
+        ref,
+        createApp,
+        createVNode,
+        openBlock,
+        createElementBlock,
+      } from '../dist/vue.esm.js'
+
+      const App = {
+        setup() {
+          const count = ref(0)
+          const className = ref('container')
+          const flag = ref(true)
+          setTimeout(() => {
+            flag.value = false
+            // className.value = 'dv'
+          }, 1000)
+
+          return () => {
+            /**
+             * oldBlock:[
+             *   pBlock:[
+             *     createVNode('div', { key: 111 }, count.value, 1),
+             *   ]
+             * ]
+             *
+             * newBlock:[
+             *   h1Block:[
+             *     createVNode('div', { key: 111 }, count.value, 1),
+             *   ]
+             * ]
+             */
+            openBlock() // 打开一个块
+            const vnode = createElementBlock('div', null, [
+              flag.value
+                ? (openBlock(),
+                  createElementBlock('p', null, [
+                    // 动态节点
+                    createVNode('div', { key: 111 }, count.value, 1),
+                  ]))
+                : (openBlock(),
+                  createElementBlock('h1', null, [
+                    // 动态节点
+                    createVNode('div', { key: 111 }, count.value, 1),
+                  ])),
+            ])
+            // openBlock()
+            // const vnode = createElementBlock(
+            //   'div',
+            //   { class: className.value },
+            //   [createVNode('h2', null, count.value, 1)],
+            //   2,
+            // )
+            // console.log('vnode ==> ', vnode)
+            return vnode
+          }
+        },
+      }
+
+      const app = createApp(App)
+      app.mount('#app')
+    </script>
+  </body>
+</html>

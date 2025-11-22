@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      #app {
+        padding: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!--    <button id="btn">过年了</button>-->
+    <script type="module">
+      // import {
+      //   h,
+      //   createApp,
+      //   ref,
+      //   KeepAlive,
+      //   onMounted,
+      //   onUnmounted,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.js'
+      import {
+        h,
+        ref,
+        createApp,
+        KeepAlive,
+        onMounted,
+        onUnmounted,
+      } from '../dist/vue.esm.js'
+
+      const Comp1 = {
+        name: 'Comp1',
+        setup() {
+          onMounted(() => {
+            console.log('挂载 Comp1')
+          })
+          onUnmounted(() => {
+            console.log('卸载 Comp1')
+          })
+          return () => {
+            return h('div', ['Comp1', h('input')])
+          }
+        },
+      }
+
+      const Comp2 = {
+        name: 'Comp2',
+        setup() {
+          onMounted(() => {
+            console.log('挂载 Comp2')
+          })
+          onUnmounted(() => {
+            console.log('卸载 Comp2')
+          })
+          return () => {
+            return h('div', ['Comp2', h('input')])
+          }
+        },
+      }
+
+      const Comp3 = {
+        name: 'Comp3',
+        setup() {
+          onMounted(() => {
+            console.log('挂载 Comp3')
+          })
+          onUnmounted(() => {
+            console.log('卸载 Comp3')
+          })
+          return () => {
+            return h('div', ['Comp3', h('input')])
+          }
+        },
+      }
+
+      const App = {
+        name: 'App',
+        setup() {
+          const components = [Comp1, Comp2, Comp3]
+          const index = ref(0)
+          function onClick() {
+            if (index.value < 2) {
+              index.value++
+            } else {
+              index.value = 0
+            }
+          }
+          return () => {
+            return h('div', [
+              h(
+                'button',
+                {
+                  onClick,
+                },
+                '切换组件',
+              ),
+              h(KeepAlive, { max: 3 }, () => h(components[index.value])),
+            ])
+          }
+        },
+      }
+
+      const app = createApp(App)
+      app.mount('#app')
+    </script>
+  </body>
+</html>

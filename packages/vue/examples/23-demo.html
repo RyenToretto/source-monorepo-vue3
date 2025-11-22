@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      #app {
+        padding: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      // import {
+      //   h,
+      //   createApp,
+      //   ref,
+      //   Fragment,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.js'
+      import { h, ref, createApp, Fragment } from '../dist/vue.esm.js'
+
+      const App = {
+        name: 'App',
+        setup() {
+          const age = ref(18)
+
+          setTimeout(() => {
+            age.value++
+          }, 1000)
+
+          return () => {
+            /**
+             * 组件可以有多个根节点
+             */
+            return h(Fragment, null, [
+              h('div', '姓名：远方'),
+              h('div', `年龄：${age.value}`),
+            ])
+          }
+        },
+      }
+
+      const app = createApp(App)
+      app.mount('#app')
+
+      setTimeout(() => {
+        app.unmount()
+      }, 2000)
+    </script>
+  </body>
+</html>

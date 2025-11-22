@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      body {
+        padding: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      // import {
+      //   computed,
+      //   effect,
+      //   ref,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.prod.js'
+      import { effect, ref, computed } from '../dist/reactivity.esm.js'
+
+      const count = ref(0)
+      count.name = '我是count'
+      // /**
+      //  * computed 它比较特殊
+      //  * 它即使一个 sub
+      //  * 又是一个 dep
+      //  */
+      // const c = computed(() => {
+      //   console.count('computed')
+      //   return count.value * 0
+      // })
+
+      effect(() => {
+        console.count('effect')
+        console.log(count.value)
+        count.value
+      })
+
+      setTimeout(() => {
+        count.value = 1
+      }, 1000)
+    </script>
+  </body>
+</html>

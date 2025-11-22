@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      #app {
+        padding: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      // import {
+      //   h,
+      //   createApp,
+      //   ref,
+      //   createVNode,
+      //   openBlock,
+      //   createElementBlock,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.js'
+      import {
+        ref,
+        createApp,
+        createVNode,
+        openBlock,
+        createElementBlock,
+        Fragment,
+        renderList,
+        toDisplayString,
+      } from '../dist/vue.esm.js'
+
+      const App = {
+        setup() {
+          const list = ref(['a', 'b', 'c'])
+
+          setTimeout(() => {
+            list.value = ['b', 'a']
+          }, 1000)
+          return () => {
+            // return (_openBlock(), _createElementBlock("div", null, [
+            //   (_openBlock(true), _createElementBlock(_Fragment, null, _renderList($setup.list, (item) => {
+            //     return (_openBlock(), _createElementBlock("div", { key: item }, _toDisplayString(item), 1 /* TEXT */))
+            //   }), 128 /* KEYED_FRAGMENT */))
+            // ]))
+            openBlock()
+            const vnode = createElementBlock('div', null, [
+              (openBlock(),
+              createElementBlock(
+                Fragment,
+                null,
+                renderList(list.value, item => {
+                  return (
+                    openBlock(),
+                    createElementBlock(
+                      'div',
+                      { key: item },
+                      toDisplayString(item),
+                      1,
+                    )
+                  )
+                }),
+                128,
+              )),
+            ])
+
+            return vnode
+          }
+        },
+      }
+
+      const app = createApp(App)
+      app.mount('#app')
+    </script>
+  </body>
+</html>

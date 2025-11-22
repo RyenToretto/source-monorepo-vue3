@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <script type="module">
+      // import {
+      //   ref,
+      //   effect,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.prod.js'
+      import { ref, effect } from '../dist/reactivity.esm.js'
+
+      const count = ref(0)
+
+      const runner = effect(
+        () => {
+          console.log('effect count.value ==> ', count.value)
+          return 1
+        },
+        {
+          scheduler() {
+            console.log('触发了调度器')
+          },
+        },
+      )
+      console.dir(runner)
+      setTimeout(() => {
+        count.value = 1
+      }, 1000)
+    </script>
+  </body>
+</html>

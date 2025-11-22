@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      #app {
+        padding: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      // import {
+      //   h,
+      //   createApp,
+      //   ref,
+      //   createVNode,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.js'
+      import { h, ref, createApp, createVNode } from '../dist/vue.esm.js'
+
+      const App = {
+        setup() {
+          const count = ref(0)
+          setTimeout(() => {
+            count.value++
+          }, 1000)
+          return () => {
+            const vnode = createVNode(
+              'div',
+              {
+                get class() {
+                  return 'container'
+                },
+              },
+              count.value,
+              1,
+            )
+            return vnode
+          }
+        },
+      }
+
+      const app = createApp(App)
+      app.mount('#app')
+    </script>
+  </body>
+</html>
