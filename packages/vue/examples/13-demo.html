@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!--    <button id="btn">过年了</button>-->
+    <script type="module">
+      // import {
+      //   h,
+      //   createApp,
+      //   ref,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.js'
+      import { h, ref, createApp } from '../dist/vue.esm.js'
+
+      /**
+       * 插槽分为三种：
+       * 匿名插槽 => 默认插槽
+       * 具名插槽 => header footer
+       * 作用域插槽 => 可以传参数，就是函数传参
+       */
+      const Child = {
+        setup(props, { slots }) {
+          return () => {
+            return h('div', [slots.default(), '子组件自己的内容'])
+          }
+        },
+      }
+      const Comp = {
+        // props: {
+        //   msg: String,
+        // },
+        setup() {
+          return () => {
+            /**
+             * <Child>
+             *   <template #header>
+             *     <div>父组件传递的插槽</div>
+             *   </template>
+             * </Child>
+             */
+            // return h('div', [
+            //   h('p', '我是父组件的p标签'),
+            //   h(Child, null, {
+            //     // 具名插槽
+            //     header: () => h('div', '父组件传递的插槽 header'),
+            //     // 默认插槽
+            //     default: () => h('div', '默认插槽'),
+            //     // 作用域插槽
+            //     footer: ({ a }) => h('div', '父组件传递的插槽 footer' + a),
+            //   }),
+            // ])
+
+            return h('div', [
+              h('p', '我是父组件的p标签'),
+              h(Child, null, () => h('div', '默认插槽')),
+            ])
+          }
+        },
+      }
+
+      createApp(Comp, { msg: 'hello' }).mount('#app')
+    </script>
+  </body>
+</html>

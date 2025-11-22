@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!--    <button id="btn">过年了</button>-->
+    <script type="module">
+      // import {
+      //   h,
+      //   createApp,
+      //   ref,
+      //   provide,
+      //   inject,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.js'
+      import {
+        h,
+        ref,
+        createApp,
+        provide,
+        inject,
+        getCurrentInstance,
+      } from '../dist/vue.esm.js'
+
+      /**
+       * 函数式组件：
+       * 如果没声明 props，那所有的属性，就都是 props
+       * 如果声明了，那就只有声明过的，放到 props 中，其他的放到 attrs 中
+       */
+      function App(props, { emit }) {
+        setTimeout(() => {
+          emit('foo')
+        }, 1000)
+        return h('div', props.msg)
+      }
+
+      App.props = ['msg']
+      const app = createApp(App, {
+        msg: 'hello world111',
+        count: 0,
+        onFoo() {
+          console.log('onFoo')
+        },
+      })
+      app.mount('#app')
+    </script>
+  </body>
+</html>

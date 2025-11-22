@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      body {
+        padding: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      // import {
+      //   reactive,
+      //   effect,
+      //   ref,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.prod.js'
+      import { reactive, effect, ref } from '../dist/reactivity.esm.js'
+      //
+      // const state = reactive(['a', 'b', 'c', 'd'])
+      //
+      // /**
+      //  * 更新数组的 length
+      //  * 更新前：length = 4 => ['a', 'b', 'c', 'd']
+      //  * 更新后：length = 2 => ['a', 'b']
+      //  * 得出结论：要通知 访问了 c 和 d 的 effect 重新执行，就是访问了大于等于 length 的索引
+      //  */
+      // effect(() => {
+      //   console.log('state[3] ==> ', state[3]) // d
+      //   // console.log('state.length ==> ', state.length) // 4
+      // })
+      //
+      // setTimeout(() => {
+      //   // state[3] = 'e'
+      //   state.length = 2 // ['a', 'b']
+      //   console.log('state ==> ', state)
+      // }, 1000)
+
+      const state = reactive(['a', 'b', 'c', 'd'])
+
+      /**
+       * 隐式更新 length
+       * 更新前：length = 4 => ['a', 'b', 'c', 'd']
+       * 更新后：length = 5 => ['a', 'b', 'c', 'd', 'e']
+       * 更新动作，以 push 为例，追加了一个 e
+       * 隐式更新 length 的方法：push pop shift unshift
+       *
+       * 如何知道 隐式更新了 length
+       */
+      effect(() => {
+        console.log('state.length ==> ', state.length) // 4
+      })
+
+      setTimeout(() => {
+        state.push('e')
+      }, 1000)
+    </script>
+  </body>
+</html>

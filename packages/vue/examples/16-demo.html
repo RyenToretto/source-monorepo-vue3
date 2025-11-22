@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!--    <button id="btn">过年了</button>-->
+    <script type="module">
+      // import {
+      //   h,
+      //   createApp,
+      //   ref,
+      //   getCurrentInstance,
+      //   onBeforeMount,
+      //   onMounted,
+      //   onBeforeUpdate,
+      //   onUpdated,
+      //   onBeforeUnmount,
+      //   onUnmounted,
+      //   useTemplateRef,
+      // } from '../../../node_modules/vue/dist/vue.esm-browser.js'
+      import {
+        h,
+        ref,
+        createApp,
+        getCurrentInstance,
+        onBeforeMount,
+        onMounted,
+        onBeforeUpdate,
+        onUpdated,
+        onBeforeUnmount,
+        onUnmounted,
+        useTemplateRef,
+      } from '../dist/vue.esm.js'
+
+      const Child = {
+        setup(props, { attrs, slots, emit, expose }) {
+          const vm = getCurrentInstance()
+          console.log('parent====>', vm.parent)
+          console.log('child====>', vm)
+          /**
+           * 如果手动调用了 expose，那么父组件通过 ref 获取到子组件实例的时候，只能获取到：expose 暴漏的属性和 $props,$attrs,$slots
+           * 如果用户没有调用 expose，那么父组件通过 ref 可以获取到子组件的 instance.proxy
+           */
+          expose({
+            a: ref(0),
+            foo() {
+              console.log('子组件暴漏的 foo')
+            },
+          })
+
+          return () => {
+            return h('div', ['我是子组件'])
+          }
+        },
+      }
+
+      const App = {
+        name: 'App',
+        setup() {
+          const el = useTemplateRef('elRef')
+          onMounted(() => {
+            // document.querySelector('#container')
+            // console.log(childRef.value.a)
+            // instance.refs['elRef']
+            console.log('el.value ==> ', el.value)
+          })
+
+          return () => {
+            return h('div', [
+              h('p', { id: 'container', ref: 'elRef' }, '我是父组件的p标签'),
+              h(Child),
+            ])
+          }
+        },
+      }
+
+      const app = createApp(App, { msg: 'hello' })
+      app.mount('#app')
+    </script>
+  </body>
+</html>
